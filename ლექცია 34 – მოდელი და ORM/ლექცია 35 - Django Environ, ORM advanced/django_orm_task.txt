@@ -1,0 +1,79 @@
+import os
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'orm_project.settings')
+
+import django
+
+django.setup()
+
+from django.db import transaction
+from orm_app.models import Lecturer, Course, Student
+
+
+with transaction.atomic():
+    Lecturer.objects.all().delete()
+    Course.objects.all().delete()
+    Student.objects.all().delete()
+
+    lecturers = [
+        Lecturer.objects.create(first_name='Nino', last_name='Abashidze'),
+        Lecturer.objects.create(first_name='Mariam', last_name='Kakabadze'),
+        Lecturer.objects.create(first_name='Giorgi', last_name='Tsintsadze'),
+    ]
+
+    course_titles = [
+        ('Python Basics', lecturers[0]),
+        ('Django ORM', lecturers[0]),
+        ('JavaScript Fundamentals', lecturers[1]),
+        ('Algorithms', lecturers[1]),
+        ('Database Design', lecturers[2]),
+    ]
+    courses = [Course.objects.create(title=title, lecturer=lecturer) for title, lecturer in course_titles]
+
+    students = [Student.objects.create(first_name=f'Student{i}', last_name=f'Lastname{i}') for i in range(1, 11)]
+
+    for index, student in enumerate(students, start=1):
+        selected_courses = courses[:2] if index % 2 == 0 else courses[1:3]
+        student.courses.add(*selected_courses)
+
+    print('All students:', list(Student.objects.all().values_list('first_name', flat=True)))
+    print('All courses:', list(Course.objects.all().values_list('title', flat=True)))
+    print('All lecturers:', list(Lecturer.objects.all().values_list('first_name', flat=True)))
+
+    student_lookup = Student.objects.get(id=1)
+    course_lookup = Course.objects.get(title='Django ORM')
+    print('Student by id:', student_lookup)
+    print('Course by title:', course_lookup)
+
+    lecturer_courses = Course.objects.filter(lecturer=lecturers[0])
+    print('Courses by lecturer:', list(lecturer_courses.values_list('title', flat=True)))
+
+    course_students = Student.objects.filter(courses__title='Django ORM')
+    print('Students in specific course:', list(course_students.values_list('first_name', flat=True)))
+
+    student_courses = Student.objects.get(id=1).courses.all()
+    print('Courses for specific student:', list(student_courses.values_list('title', flat=True)))
+
+    Student.objects.filter(id=1).update(first_name='UpdatedStudent')
+    Lecturer.objects.filter(id=1).update(last_name='UpdatedLastName')
+    Course.objects.filter(id=1).update(title='Python Advanced')
+
+    student = Student.objects.get(id=1)
+    student.courses.add(courses[3])
+    student.courses.remove(courses[1])
+    student.courses.set([courses[0], courses[3]])
+
+    course_to_reassign = Course.objects.get(title='Database Design')
+    course_to_reassign.lecturer = lecturers[1]
+    course_to_reassign.save()
+
+    Student.objects.get(id=2).delete()
+    Course.objects.get(title='Algorithms').delete()
+    Lecturer.objects.get(id=3).delete()
+
+    student_clear = Student.objects.get(id=1)
+    student_clear.courses.clear()
+
+    print('Final remaining student count:', Student.objects.count())
+    print('Final remaining course count:', Course.objects.count())
+    print('Final remaining lecturer count:', Lecturer.objects.count())
