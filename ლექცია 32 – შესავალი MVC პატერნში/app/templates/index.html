@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movies Dashboard</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background: #f5f5f5;
+      }
+      .stats {
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background: #333;
+        color: white;
+      }
+      tr:nth-child(even) {
+        background: #f9f9f9;
+      }
+      .high {
+        color: green;
+        font-weight: bold;
+      }
+      .medium {
+        color: orange;
+        font-weight: bold;
+      }
+      .low {
+        color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Movies List</h1>
+
+    <div class="stats">
+      <p><strong>Total movies:</strong> {{ total_movies }}</p>
+      <p><strong>Average duration:</strong> {{ average_duration }} minutes</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Year</th>
+          <th>Rating</th>
+          <th>Genre</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for movie in movies %}
+        <tr>
+          {% if movie.rating >= 9 %}
+          <td class="high">{{ movie.title }}</td>
+          <td class="high">{{ movie.year }}</td>
+          <td class="high">{{ movie.rating }}</td>
+          <td class="high">{{ movie.genre }}</td>
+          <td class="high">{{ movie.duration }} min</td>
+          {% elif movie.rating >= 8.5 %}
+          <td class="medium">{{ movie.title }}</td>
+          <td class="medium">{{ movie.year }}</td>
+          <td class="medium">{{ movie.rating }}</td>
+          <td class="medium">{{ movie.genre }}</td>
+          <td class="medium">{{ movie.duration }} min</td>
+          {% else %}
+          <td class="low">{{ movie.title }}</td>
+          <td class="low">{{ movie.year }}</td>
+          <td class="low">{{ movie.rating }}</td>
+          <td class="low">{{ movie.genre }}</td>
+          <td class="low">{{ movie.duration }} min</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
