@@ -1,0 +1,30 @@
+{% extends 'store/base.html' %} {% block content %}
+<div class="grid" style="grid-template-columns: 1fr 2fr; gap: 2rem">
+  <aside class="card">
+    <h2>Categories</h2>
+    <ul class="category-list">
+      {% for category in categories %}
+      <li>
+        <a href="{{ category.get_absolute_url }}"
+          >{{ category.name }} ({{ category.product_count }})</a
+        >
+      </li>
+      {% empty %}
+      <li>No categories available.</li>
+      {% endfor %}
+    </ul>
+  </aside>
+  <main>
+    <div class="card">
+      <h2>About This Shop</h2>
+      <p>
+        Welcome to the demo shop. Browse products, categories, and sale items.
+      </p>
+      <p>
+        This project uses Django, SQLite, and annotated counts for category
+        listings.
+      </p>
+    </div>
+  </main>
+</div>
+{% endblock %}

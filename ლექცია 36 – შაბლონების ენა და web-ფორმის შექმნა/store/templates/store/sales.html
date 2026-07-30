@@ -1,0 +1,39 @@
+{% extends 'store/base.html' %} {% block content %}
+<div class="grid" style="grid-template-columns: 1fr 2fr; gap: 2rem">
+  <aside class="card">
+    <h2>Categories</h2>
+    <ul class="category-list">
+      {% for category in categories %}
+      <li>
+        <a href="{{ category.get_absolute_url }}"
+          >{{ category.name }} ({{ category.product_count }})</a
+        >
+      </li>
+      {% empty %}
+      <li>No categories available.</li>
+      {% endfor %}
+    </ul>
+  </aside>
+  <main>
+    <div class="card">
+      <h2>Sale Products</h2>
+    </div>
+    <div
+      class="grid"
+      style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))"
+    >
+      {% for product in products %}
+      <div class="card sale">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description|default:'No description.' }}</p>
+        <p><strong>Price:</strong> ${{ product.effective_price }}</p>
+        <span class="sale-label">SALE</span>
+        <p><strong>Category:</strong> {{ product.category.name }}</p>
+      </div>
+      {% empty %}
+      <p>No sale products right now.</p>
+      {% endfor %}
+    </div>
+  </main>
+</div>
+{% endblock %}
