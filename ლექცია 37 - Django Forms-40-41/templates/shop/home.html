@@ -1,0 +1,41 @@
+{% extends 'shop/base.html' %} {% block content %}
+<h1>All Available Products</h1>
+<div class="card">
+  <h2>Categories</h2>
+  <ul>
+    {% for category in categories %}
+    <li>
+      <a href="{% url 'shop:category_detail' category.slug %}"
+        >{{ category.name }}</a
+      >
+      ({{ category.num_products }})
+    </li>
+    {% empty %}
+    <li>No categories yet.</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="product-list">
+  {% for product in products %}
+  <div class="card">
+    <h3>
+      <a href="{% url 'shop:product_detail' product.pk %}"
+        >{{ product.name }}</a
+      >
+    </h3>
+    <p>Category: {{ product.category.name }}</p>
+    <p>Price: ${{ product.price }}</p>
+    {% if product.is_sale %}
+    <p class="sale">SALE</p>
+    {% endif %}
+    <div class="actions">
+      <a href="{% url 'shop:product_update' product.pk %}">Edit</a>
+      <a href="{% url 'shop:product_delete' product.pk %}">Delete</a>
+    </div>
+  </div>
+  {% empty %}
+  <p>No products available.</p>
+  {% endfor %}
+</div>
+{% endblock %}
