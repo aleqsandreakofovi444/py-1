@@ -1,0 +1,19 @@
+{% extends 'shop/base.html' %} {% block content %}
+<h1>Sale Products</h1>
+<div class="product-list">
+  {% for product in products %}
+  <div class="card">
+    <h3>
+      <a href="{% url 'shop:product_detail' product.pk %}"
+        >{{ product.name }}</a
+      >
+    </h3>
+    <p>Category: {{ product.category.name }}</p>
+    <p>Price: ${{ product.price }}</p>
+    <p class="sale">SALE</p>
+  </div>
+  {% empty %}
+  <p>No sale products right now.</p>
+  {% endfor %}
+</div>
+{% endblock %}

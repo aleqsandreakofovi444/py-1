@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f8f8f8;
+        color: #222;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      nav {
+        background: #222;
+        color: white;
+        padding: 12px 24px;
+      }
+      nav a {
+        color: white;
+        margin-right: 16px;
+        text-decoration: none;
+      }
+      .card {
+        background: white;
+        padding: 16px;
+        margin-bottom: 16px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      }
+      .product-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      .sale {
+        color: #c62828;
+        font-weight: bold;
+      }
+      .actions a {
+        margin-right: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'shop:home' %}">Home</a>
+      <a href="{% url 'shop:sale_products' %}">Sale</a>
+      <a href="{% url 'shop:product_create' %}">Add Product</a>
+    </nav>
+    <div class="container">{% block content %}{% endblock %}</div>
+  </body>
+</html>

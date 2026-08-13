@@ -1,0 +1,18 @@
+{% extends 'shop/base.html' %} {% block content %}
+<div class="card">
+  <h1>{{ product.name }}</h1>
+  <p><strong>Category:</strong> {{ product.category.name }}</p>
+  <p>
+    <strong>Description:</strong> {{ product.description|default:'No description
+    provided.' }}
+  </p>
+  <p><strong>Price:</strong> ${{ product.price }}</p>
+  {% if product.is_sale %}
+  <p class="sale">SALE</p>
+  {% endif %}
+  <div class="actions">
+    <a href="{% url 'shop:product_update' product.pk %}">Edit</a>
+    <a href="{% url 'shop:product_delete' product.pk %}">Delete</a>
+  </div>
+</div>
+{% endblock %}
